@@ -1,0 +1,99 @@
+Metadata-Version: 2.1
+Name: mmpose
+Version: 1.2.0
+Summary: OpenMMLab Pose Estimation Toolbox and Benchmark.
+Home-page: https://github.com/open-mmlab/mmpose
+Author: MMPose Contributors
+Author-email: openmmlab@gmail.com
+License: Apache License 2.0
+Keywords: computer vision,pose estimation
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: chumpy
+Requires-Dist: json_tricks
+Requires-Dist: matplotlib
+Requires-Dist: munkres
+Requires-Dist: numpy
+Requires-Dist: opencv-python
+Requires-Dist: pillow
+Requires-Dist: scipy
+Requires-Dist: xtcocotools
+Provides-Extra: all
+Requires-Dist: numpy; extra == "all"
+Requires-Dist: chumpy; extra == "all"
+Requires-Dist: json_tricks; extra == "all"
+Requires-Dist: matplotlib; extra == "all"
+Requires-Dist: munkres; extra == "all"
+Requires-Dist: numpy; extra == "all"
+Requires-Dist: opencv-python; extra == "all"
+Requires-Dist: pillow; extra == "all"
+Requires-Dist: scipy; extra == "all"
+Requires-Dist: xtcocotools; extra == "all"
+Requires-Dist: coverage; extra == "all"
+Requires-Dist: flake8; extra == "all"
+Requires-Dist: interrogate; extra == "all"
+Requires-Dist: isort; extra == "all"
+Requires-Dist: parameterized; extra == "all"
+Requires-Dist: pytest; extra == "all"
+Requires-Dist: pytest-runner; extra == "all"
+Requires-Dist: xdoctest; extra == "all"
+Requires-Dist: yapf; extra == "all"
+Requires-Dist: requests; extra == "all"
+Provides-Extra: tests
+Requires-Dist: coverage; extra == "tests"
+Requires-Dist: flake8; extra == "tests"
+Requires-Dist: interrogate; extra == "tests"
+Requires-Dist: isort; extra == "tests"
+Requires-Dist: parameterized; extra == "tests"
+Requires-Dist: pytest; extra == "tests"
+Requires-Dist: pytest-runner; extra == "tests"
+Requires-Dist: xdoctest; extra == "tests"
+Requires-Dist: yapf; extra == "tests"
+Provides-Extra: optional
+Requires-Dist: requests; extra == "optional"
+Provides-Extra: mim
+Requires-Dist: mmcv<2.1.0,>=2.0.0; extra == "mim"
+Requires-Dist: mmdet<3.2.0,>=3.0.0; extra == "mim"
+Requires-Dist: mmengine<1.0.0,>=0.4.0; extra == "mim"
+
+##代码适用步骤：
+###常规模型训练测试
+1. conda  activate  mmpose  #切换环境为mmpose
+2. cd mmpose_my
+3. python   train.py #用于训练模型
+4. python test.py --checkpoint work_dirs/epoch_20.pth #模型为训练好模型的路径
+5. python inference.py --checkpoint work_dirs/epoch_20.pth #模型为训练好模型的路径 #用于推理测试集的结果，并保存在results_inference
+6. python  deploy.py --checkpoint work_dirs/epoch_20.pth #模型为训练好模型的路径#转化模型为onnx，结果存在results中
+##tools
+在tools里有相关的辅助的脚本代码，可供使用
+##data
+data文件夹里存放权重，图片及onnx文件
+
+##蒸馏模型
+在config/distiller里是蒸馏的相关配置
+
+##训练蒸馏模型命令##
+cd mmpose
+bash tools/dist_train.sh configs/distiller/ubody/s1_dis/rtmpose_x_dis_l__coco-ubody-256x192.py
+cd mmpose
+bash tools/dist_train.sh configs/distiller/ubody/s2_dis/dwpose_l-ll__coco-ubody-256x192.py
+##蒸馏模型转正常模型
+####first stage 
+python tool/pth_transfer.py $旧模型权重路径 $新模型权重路径
+####second stage distillation
+python tool/pth_transfer.py $dis_ckpt $new_pose_ckpt --two_dis
+##蒸馏测试
+# test on UBody
+bash tools/dist_test.sh configs/wholebody_2d_keypoint/rtmpose/wholebody/rtmpose-l_dw_ubody-wholebody-384x288.py $pose_ckpt 8
+
+# test on COCO
+bash tools/dist_test.sh configs/wholebody_2d_keypoint/rtmpose/wholebody/rtmpose-l_dw_coco-ubody-wholebody-384x288.py $pose_ckpt 8

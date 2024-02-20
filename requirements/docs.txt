@@ -1,0 +1,8 @@
+docutils
+markdown
+myst-parser
+-e git+https://github.com/gaotongxiao/pytorch_sphinx_theme.git#egg=pytorch_sphinx_theme
+sphinx
+sphinx_copybutton
+sphinx_markdown_tables
+urllib3

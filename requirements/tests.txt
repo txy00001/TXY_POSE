@@ -1,0 +1,9 @@
+coverage
+flake8
+interrogate
+isort
+parameterized
+pytest
+pytest-runner
+xdoctest
+yapf

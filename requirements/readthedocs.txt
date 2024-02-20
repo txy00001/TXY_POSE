@@ -1,0 +1,8 @@
+mmcv
+mmengine
+munkres
+regex
+scipy
+titlecase
+
+xtcocotools
