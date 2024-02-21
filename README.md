@@ -1,3 +1,5 @@
+以mmpose为基础，将其减重扩展，实现模型优化---模块扩展---数据集扩展---模型转换部署（onnx/trt）---模型蒸馏，同时也添加了轻量化架构和det-pose-track的全流程
+
 ## 代码适用步骤：
 ## 常规模型训练测试
 1. conda  activate  mmpose  #切换环境为mmpose
